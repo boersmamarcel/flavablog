@@ -14,6 +14,7 @@ from transformers import AutoTokenizer, BertModel, AutoImageProcessor, AutoModel
 from torch.utils.data import DataLoader
 from torchmultimodal.models.flava.model import flava_model_for_classification
 from typing import List, Tuple
+import torch
 
 torch.set_float32_matmul_precision('medium')
 
@@ -243,6 +244,7 @@ dataset.set_transform(transform)
 # Create the data loader
 train_data_loader = DataLoader(dataset['train'], batch_size=128, num_workers=27, shuffle=True)
 validation_data_loader = DataLoader(dataset["validation"], batch_size=64, num_workers=27)
+test_data_loader = DataLoader(dataset['test'], batch_size=64, num_workers=27)
 
 
 # Instantiate the model and trainer
@@ -270,3 +272,4 @@ trainer.fit(model, train_data_loader, validation_data_loader)
 
 trainer.validate(model, validation_data_loader)
 
+trainer.test(model, test_data_loader)
